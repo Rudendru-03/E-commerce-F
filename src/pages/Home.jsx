@@ -1,6 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import {
+  clothsImg,
+  footwareImg,
+  electronicsImg,
+  beautyImg,
+} from "../../constant";
 
 const FeaturedProduct = ({ product }) => (
   <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -89,22 +95,22 @@ function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           <CategoryLink
             name="Clothes"
-            image="/placeholder.svg?height=200&width=300"
+            image={clothsImg}
             link="/products/clothes"
           />
           <CategoryLink
             name="Footwear"
-            image="/placeholder.svg?height=200&width=300"
+            image={footwareImg}
             link="/products/footwear"
           />
           <CategoryLink
             name="Electronics"
-            image="/placeholder.svg?height=200&width=300"
+            image={electronicsImg}
             link="/products/electronics"
           />
           <CategoryLink
             name="Beauty"
-            image="/placeholder.svg?height=200&width=300"
+            image={beautyImg}
             link="/products/beauty"
           />
         </div>

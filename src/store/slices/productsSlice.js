@@ -3,17 +3,22 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:5000/api/products";
 
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+});
+
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async (category, { getState, rejectWithValue }) => {
     try {
       const { auth } = getState();
-      const response = await axios.get(`${API_BASE_URL}/${category}`, {
+      const response = await axiosInstance.get(`/${category}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
       });
-      return response.data;
+      return { category, data: response.data };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -35,7 +40,14 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.items = action.payload;
+        if (action.payload.category === "all") {
+          state.items = action.payload.data;
+        } else {
+          const existingItems = state.items.filter(
+            (item) => item.category !== action.payload.category
+          );
+          state.items = [...existingItems, ...action.payload.data];
+        }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = "failed";
