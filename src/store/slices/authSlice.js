@@ -74,6 +74,7 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     token: localStorage.getItem("token"),
+    isLoading: false,
     status: "idle",
     error: null,
   },
@@ -81,6 +82,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
+        state.isLoading = true;
         state.status = "loading";
       })
       .addCase(register.fulfilled, (state, action) => {

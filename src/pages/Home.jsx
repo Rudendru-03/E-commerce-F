@@ -20,7 +20,7 @@ const FeaturedProduct = ({ product }) => (
       <p className="text-gray-600 mb-2">{product.brand}</p>
       <p className="text-gray-800 font-bold">${product.price.toFixed(2)}</p>
       <Link
-        to={`/product/${product.id}`}
+        to={`/product/${product._id}`}
         className="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
       >
         View Details
@@ -62,7 +62,7 @@ function Home() {
         </p>
         {user ? (
           <Link
-            to="/products/all"
+            to="/products"
             className="bg-white text-blue-500 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300"
           >
             Shop Now

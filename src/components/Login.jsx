@@ -71,6 +71,13 @@ function Login() {
               >
                 Forgot your password?
               </Link>
+              <Link
+                to="/register"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Dont't have an account?{" "}
+                <p className="font-bold under-line">Sign Up.</p>
+              </Link>
             </div>
           </div>
 
