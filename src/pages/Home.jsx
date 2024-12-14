@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "../store/slices/productsSlice";
 import {
   clothsImg,
   footwareImg,
@@ -20,7 +21,7 @@ const FeaturedProduct = ({ product }) => (
       <p className="text-gray-600 mb-2">{product.brand}</p>
       <p className="text-gray-800 font-bold">${product.price.toFixed(2)}</p>
       <Link
-        to={`/product/${product._id}`}
+        to={`/products/${product.mainCategory}/${product._id}`}
         className="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
       >
         View Details
@@ -45,10 +46,32 @@ const CategoryLink = ({ name, image, link }) => (
 );
 
 function Home() {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const featuredProducts = useSelector((state) =>
-    state.products.items.slice(0, 4)
+  const { items: productItems, status } = useSelector(
+    (state) => state.products
   );
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchProducts("clothes"));
+      dispatch(fetchProducts("footwear"));
+      dispatch(fetchProducts("electronics"));
+      dispatch(fetchProducts("beauty"));
+    }
+  }, [dispatch, status]);
+
+  const getFeaturedProducts = () => {
+    const allProducts = [
+      ...(productItems.clothes || []),
+      ...(productItems.footwear || []),
+      ...(productItems.electronics || []),
+      ...(productItems.beauty || []),
+    ];
+    return allProducts.slice(0, 4);
+  };
+
+  const featuredProducts = getFeaturedProducts();
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -62,7 +85,7 @@ function Home() {
         </p>
         {user ? (
           <Link
-            to="/products"
+            to="/products/all"
             className="bg-white text-blue-500 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300"
           >
             Shop Now
@@ -83,7 +106,7 @@ function Home() {
           <h2 className="text-2xl font-bold mb-6">Featured Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (
-              <FeaturedProduct key={product.id} product={product} />
+              <FeaturedProduct key={product._id} product={product} />
             ))}
           </div>
         </div>

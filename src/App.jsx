@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ProductList from "./pages/ProductList";
+import ProductDetails from "./pages/ProductDetails";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ForgotPassword from "./components/ForgotPassword";
@@ -20,6 +21,10 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route element={<PrivateRoute />}>
             <Route path="/products/:category" element={<ProductList />} />
+            <Route
+              path="/products/:category/:id"
+              element={<ProductDetails />}
+            />
           </Route>
         </Routes>
       </div>
